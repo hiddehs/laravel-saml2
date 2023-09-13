@@ -6,6 +6,7 @@ use Slides\Saml2\Events\SignedIn;
 use Slides\Saml2\Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Request as StaticRequest;
 use OneLogin\Saml2\Error as OneLoginError;
 
 /**
@@ -45,6 +46,10 @@ class Saml2Controller extends Controller
      */
     public function acs(Auth $auth)
     {
+        /** @var $_POST
+         * Add back $_POST Array to supply response in Octane server
+         */
+        $_POST = StaticRequest::all('SAMLResponse');
         $errors = $auth->acs();
 
         if (!empty($errors)) {
