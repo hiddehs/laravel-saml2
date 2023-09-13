@@ -49,7 +49,7 @@ class Saml2Controller extends Controller
         /** @var $_POST
          * Add back $_POST Array to supply response in Octane server
          */
-        if(!$_POST) $_POST = StaticRequest::all('SAMLResponse');
+        if (!$_POST) $_POST = StaticRequest::all('SAMLResponse');
         $errors = $auth->acs();
 
         if (!empty($errors)) {
@@ -120,7 +120,19 @@ class Saml2Controller extends Controller
     {
         $redirectUrl = $auth->getTenant()->relay_state_url ?: config('saml2.loginRoute');
 
-        $auth->login($request->query('returnTo', $redirectUrl));
+        $redirectUrl = $auth->login(
+            $request->query('returnTo', $redirectUrl),
+            [],
+            false,
+            false,
+            true
+        );
+
+        /**
+         * See \OneLogin\Saml2\Utils for original (non-stay) redirect headers
+         */
+        return redirect($redirectUrl)->header('Pragma', 'no-cache')->header('Cache-Control', 'no-cache, must-revalidate');
+
     }
 
     /**
