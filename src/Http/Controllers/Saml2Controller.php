@@ -49,7 +49,7 @@ class Saml2Controller extends Controller
         /** @var $_POST
          * Add back $_POST Array to supply response in Octane server
          */
-        $_POST = StaticRequest::all('SAMLResponse');
+        if(!$_POST) $_POST = StaticRequest::all('SAMLResponse');
         $errors = $auth->acs();
 
         if (!empty($errors)) {
