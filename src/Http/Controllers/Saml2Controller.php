@@ -122,7 +122,7 @@ class Saml2Controller extends Controller
 
         $redirectUrl = $auth->login(
             $request->query('returnTo', $redirectUrl),
-            [],
+            isset($auth->getTenant()->login_params) && $auth->getTenant()->login_params ? (array)json_decode($auth->getTenant()->login_params) : [],
             false,
             false,
             true
