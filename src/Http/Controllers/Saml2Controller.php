@@ -91,6 +91,11 @@ class Saml2Controller extends Controller
      */
     public function sls(Auth $auth)
     {
+        /** @var $_GET
+         * Add back $_GET Array to supply response in Octane server
+         */
+        if (!$_GET) $_GET = StaticRequest::all('SAMLResponse');
+
         $errors = $auth->sls(config('saml2.retrieveParametersFromServer'));
 
         if (!empty($errors)) {
