@@ -2,6 +2,7 @@
 
 namespace Slides\Saml2\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use Slides\Saml2\Events\SignedIn;
 use Slides\Saml2\Auth;
 use Illuminate\Routing\Controller;
@@ -92,8 +93,9 @@ class Saml2Controller extends Controller
         /** @var $_GET
          * Override $_GET param to supply response in Octane server
          */
-
         $errors = $auth->sls(config('saml2.retrieveParametersFromServer'), $request->all(['SAMLResponse', 'RelayState']));
+
+        Log::debug(json_encode($request->all()));
 
         if (!empty($errors)) {
             logger()->error('saml2.error_detail', ['error' => $auth->getLastErrorReason()]);

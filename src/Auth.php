@@ -164,7 +164,7 @@ class Auth
      *
      * @throws \OneLogin\Saml2\Error
      */
-    public function sls($retrieveParametersFromServer = false, $payload=[])
+    public function sls($retrieveParametersFromServer = false, $payload = null)
     {
         $this->base->processSLO(false, null, $retrieveParametersFromServer, function () {
             event(new SignedOut());
