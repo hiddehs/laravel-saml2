@@ -136,9 +136,9 @@ class Auth
      * @throws OneLoginError
      * @throws \OneLogin\Saml2\ValidationError
      */
-    public function acs()
+    public function acs($payload = null)
     {
-        $this->base->processResponse();
+        $this->base->processResponse(null, $payload);
 
         $errors = $this->base->getErrors();
 
@@ -164,11 +164,11 @@ class Auth
      *
      * @throws \OneLogin\Saml2\Error
      */
-    public function sls($retrieveParametersFromServer = false)
+    public function sls($retrieveParametersFromServer = false, $payload=[])
     {
         $this->base->processSLO(false, null, $retrieveParametersFromServer, function () {
             event(new SignedOut());
-        });
+        }, false, $payload);
 
         $errors = $this->base->getErrors();
 

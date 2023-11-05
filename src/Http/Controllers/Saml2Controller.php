@@ -44,13 +44,12 @@ class Saml2Controller extends Controller
      * @throws OneLoginError
      * @throws \OneLogin\Saml2\ValidationError
      */
-    public function acs(Auth $auth)
+    public function acs(Auth $auth, \Illuminate\Support\Facades\Request $request)
     {
-        /** @var $_POST
-         * Add back $_POST Array to supply response in Octane server
+        /**
+         * $_POST is not supported in php swoole envs, use Illu Request as payload input
          */
-        if (!$_POST) $_POST = request()->all('SAMLResponse');
-        $errors = $auth->acs();
+        $errors = $auth->acs($request->all('SAMLResponse'));
 
         if (!empty($errors)) {
             logger()->error('saml2.error_detail', ['error' => $auth->getLastErrorReason()]);
@@ -89,14 +88,13 @@ class Saml2Controller extends Controller
      * @throws OneLoginError
      * @throws \Exception
      */
-    public function sls(Auth $auth)
+    public function sls(Auth $auth, \Illuminate\Support\Facades\Request $request)
     {
         /** @var $_GET
-         * Add back $_GET Array to supply response in Octane server
+         * Override $_GET param to supply response in Octane server
          */
-        if (!$_GET) $_GET = request()->all('SAMLResponse');
 
-        $errors = $auth->sls(config('saml2.retrieveParametersFromServer'));
+        $errors = $auth->sls(config('saml2.retrieveParametersFromServer'), $request->all(['SAMLResponse', 'RelayState']));
 
         if (!empty($errors)) {
             logger()->error('saml2.error_detail', ['error' => $auth->getLastErrorReason()]);
