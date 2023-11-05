@@ -6,7 +6,6 @@ use Slides\Saml2\Events\SignedIn;
 use Slides\Saml2\Auth;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use Request as StaticRequest;
 use OneLogin\Saml2\Error as OneLoginError;
 
 /**
@@ -39,12 +38,12 @@ class Saml2Controller extends Controller
      *
      * @param Auth $auth
      *
-     * @return \Illuminate\Support\Facades\Redirect
+//     * @return \Illuminate\Support\Facades\Redirect
      *
      * @throws OneLoginError
      * @throws \OneLogin\Saml2\ValidationError
      */
-    public function acs(Auth $auth, \Illuminate\Support\Facades\Request $request)
+    public function acs(Auth $auth, Request $request)
     {
         /**
          * $_POST is not supported in php swoole envs, use Illu Request as payload input
@@ -83,12 +82,12 @@ class Saml2Controller extends Controller
      *
      * @param Auth $auth
      *
-     * @return \Illuminate\Support\Facades\Redirect
+//     * @return \Illuminate\Support\Facades\Redirect
      *
      * @throws OneLoginError
      * @throws \Exception
      */
-    public function sls(Auth $auth, \Illuminate\Support\Facades\Request $request)
+    public function sls(Auth $auth, Request $request)
     {
         /** @var $_GET
          * Override $_GET param to supply response in Octane server
