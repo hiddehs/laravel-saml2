@@ -93,9 +93,9 @@ class Saml2Controller extends Controller
         /** @var $_GET
          * Override $_GET param to supply response in Octane server
          */
-        $errors = $auth->sls(config('saml2.retrieveParametersFromServer'), $request->all(['SAMLResponse', 'RelayState']));
-
+        
         Log::debug(json_encode($request->all()));
+        $errors = $auth->sls(config('saml2.retrieveParametersFromServer'), $request->all(['SAMLRequest', 'SAMLResponse', 'RelayState']));
 
         if (!empty($errors)) {
             logger()->error('saml2.error_detail', ['error' => $auth->getLastErrorReason()]);
